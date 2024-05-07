@@ -3,8 +3,9 @@
 gpu: 0
 
 dataset:
-    path: 'path to player data'
-    #name: ''
+    path: '../prepared_data/*'
+    name: 'Red5551'
+#    output_directory: '/output'
 
 training:
     precision: 'half'
