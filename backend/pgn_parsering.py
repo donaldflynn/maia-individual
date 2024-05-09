@@ -26,33 +26,45 @@ class GamesFile(object):
             self.f.close()
         except AttributeError:
             pass
-
     def __next__(self):
+        current_entry = {}
+        lines_buffer = []
 
-        ret = {}
-        lines = ''
-        for l in self.f:
+        for line in self.f:
             self.i += 1
-            lines += l
-            if len(l) < 2:
-                if len(ret) >= 2:
+            lines_buffer.append(line)
+
+            # Check if line length is less than 2
+            if len(line) < 2:
+                # Check if at least 2 key-value pairs are collected
+                if len(current_entry) >= 2:
                     break
                 else:
-                    raise RuntimeError(l)
+                    raise RuntimeError("Incomplete key-value pair: " + repr(line))
             else:
                 try:
-                    k, v, _ = l.split('"')
+                    # Split the line into key, value, and optional separator
+                    key, value, _ = line.split('"')
                 except ValueError:
-                    #bad line
-                    if l == 'null\n':
-                        pass
+                    # Handle bad line
+                    if line.strip() == 'null':
+                        pass  # Skip 'null' lines
                     else:
-                        raise
+                        raise RuntimeError("Error parsing line: " + repr(line))
                 else:
-                    ret[k[1:-1]] = v
-        nl = self.f.readline()
-        lines += nl
-        lines += self.f.readline()
-        if len(lines) < 1:
+                    current_entry[key[1:-1]] = value
+
+        # Read the next line to check for the end of the file
+        next_line = self.f.readline()
+        lines_buffer.append(next_line)
+
+        # Check if end of file is reached
+        if not next_line:
             raise StopIteration
-        return ret, lines
+
+        # Read and append the next line to maintain consistency
+        subsequent_line = self.f.readline()
+        lines_buffer.append(subsequent_line)
+
+        return current_entry, ''.join(lines_buffer)
+

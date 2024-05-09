@@ -12,4 +12,4 @@ if "%command%"=="" set command=/bin/bash
 
 
 REM mounts code in the docker container, and starts
-docker run --rm -it -v "%FOLDER%":/app/code donaldflynn/maia-individual:latest
+docker run --rm -it -v "%FOLDER%":/app/code --entrypoint /bin/bash donaldflynn/maia-individual:latest
