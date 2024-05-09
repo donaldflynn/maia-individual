@@ -3,9 +3,8 @@
 gpu: 0
 
 dataset:
-    path: '../prepared_data/*'
+    path: '/app/output/'
     name: 'Red5551'
-#    output_directory: '/output'
 
 training:
     precision: 'half'

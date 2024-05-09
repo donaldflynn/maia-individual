@@ -2,7 +2,7 @@
 FROM ubuntu:18.04
 
 # Set the maintainer label
-LABEL maintainer="you@example.com"
+LABEL maintainer="donaldflynn@hotmail.co.uk"
 
 # Set environment variables to make the container non-interactive
 ENV DEBIAN_FRONTEND=noninteractive
