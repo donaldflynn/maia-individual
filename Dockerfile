@@ -53,9 +53,9 @@ RUN chmod +x /bin/trainingdata-tool
 # Set up pgn-extract tool
 COPY /ImportantTools/pgn-extract-22-11.tgz /app/ImportantTools/pgn-extract-22-11.tgz
 RUN cd /app/ImportantTools && \
-    tar -xvzf pgn-extract-22-11.tgz \
-    cd pgn-extract/ \
-    make \
+    tar -xvzf pgn-extract-22-11.tgz && \
+    cd pgn-extract/ && \
+    make && \
     cp pgn-extract /bin
 
 RUN apt-get install -y screen

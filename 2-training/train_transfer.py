@@ -34,12 +34,10 @@ def main(config_path, name, collection_name, player_name, gpu, num_workers):
 
     train_chunks_white, train_chunks_black = backend.tf_transfer.get_latest_chunks(os.path.join(
                 cfg['dataset']['path'],
-                cfg['dataset']['name'],
                 'train',
                 ))
     val_chunks_white, val_chunks_black = backend.tf_transfer.get_latest_chunks(os.path.join(
                 cfg['dataset']['path'],
-                cfg['dataset']['name'],
                 'validate',
                 ))
 
