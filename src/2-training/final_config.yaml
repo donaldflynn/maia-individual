@@ -3,8 +3,8 @@
 gpu: 0
 
 dataset:
-    path: '/app/output/'
-    name: 'Red5551'
+    path: '/app/processed/'
+    name: ${PLAYER_NAME}
 
 training:
     precision: 'half'
