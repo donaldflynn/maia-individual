@@ -1,3 +1,14 @@
+Instructions to get working:
+
+1. Either build the docker container or download the image (TODO: get location)
+2. Download your chess games from lichess at https://lichess.org/@/[USERNAME]/download
+   - Ensure not to download the games from the variants, and to leave PGN tags included in the download
+3. Run the docker container with the command:
+
+
+-----
+# Original README:
+
 # Learning Models of Individual Behavior in Chess
 
 ## [website](https://maiachess.com)/[paper](https://arxiv.org/abs/2008.10086)/[code](https://github.com/CSSLab/maia-individual)

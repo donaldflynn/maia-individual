@@ -1,0 +1,1 @@
+docker buildx build  -t "maia-individual:latest" --load .

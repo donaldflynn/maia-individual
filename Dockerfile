@@ -7,20 +7,15 @@ LABEL maintainer="donaldflynn@hotmail.co.uk"
 # Set environment variables to make the container non-interactive
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Update and install system-wide dependencies (TODO: slim down)
+# Update and install system-wide dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     bzip2 \
     ca-certificates \
     build-essential \
-    curl \
-    git-core \
-    htop \
-    pkg-config \
-    unzip \
     gcc \
-    g++ \
     make \
+    screen \
     libgl1-mesa-glx \
     && apt-get clean
 
@@ -30,7 +25,7 @@ RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2024.02-1-Linux-x86
     && rm ~/anaconda.sh
 ENV PATH=/opt/anaconda/bin:${PATH}
 
-COPY ./environment.yml ./app/environment.yml
+COPY environment.yml ./app/environment.yml
 
 # Install wine
 RUN dpkg --add-architecture i386
@@ -42,9 +37,6 @@ WORKDIR /app
 
 # Create the environment using the environment.yml file
 RUN conda env create -f environment.yml
-
-# Make RUN commands use the new environment
-SHELL ["/opt/anaconda/bin/conda", "run", "-n", "transfer_chess", "/bin/bash", "-c"]
 
 # Set up trainingdata-tool
 COPY /ImportantTools/trainingdata-tool.sh /bin/trainingdata-tool
@@ -60,7 +52,7 @@ RUN cd /app/ImportantTools && \
 
 RUN apt-get install -y screen
 
-COPY . .
+COPY src .
 
 RUN python setup.py install
 
