@@ -3,7 +3,9 @@ Instructions to get working:
 1. Either build the docker container or download the image (TODO: get location)
 2. Download your chess games from lichess at https://lichess.org/@/[USERNAME]/download
    - Ensure not to download the games from the variants, and to leave PGN tags included in the download
-3. Run the docker container with the command:
+3. Rename your pgn to "input.pgn", and copy it into the /input folder
+4. Run the docker container using `/scripts/docker_run.bat <lichess username>`
+6. conda run -n transfer_chess --no-capture-output python train_transfer.py final_config.yaml
 
 
 -----

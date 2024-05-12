@@ -17,10 +17,10 @@ mkdir -p ${split_dir}
 
 echo "${p_name} to ${p_dir}"
 
-python split_by_player.py $player_file $p_name $split_dir/games
+/opt/anaconda/bin/conda run -n transfer_chess python split_by_player.py $player_file $p_name $split_dir/games
 
 for c in "white" "black"; do
-    python pgn_fractional_split.py $split_dir/games_$c.pgn.bz2 $split_dir/train_$c.pgn.bz2 $split_dir/validate_$c.pgn.bz2 --ratios $train_frac $val_frac
+    /opt/anaconda/bin/conda run -n transfer_chess --no-capture-output python pgn_fractional_split.py $split_dir/games_$c.pgn.bz2 $split_dir/train_$c.pgn.bz2 $split_dir/validate_$c.pgn.bz2 --ratios $train_frac $val_frac
 
     cd $p_dir
     mkdir -p pgns
@@ -37,7 +37,9 @@ for c in "white" "black"; do
 
         #using tool from:
         #https://github.com/DanielUranga/trainingdata-tool
-        screen -S "${p_name}-${c}-${s}" -dm bash -c "cd ${s}/${c}; trainingdata-tool -v ../../pgns/${s}_${c}.pgn"
+#        screen -S "${p_name}-${c}-${s}" -dm bash -c "cd ${s}/${c}; trainingdata-tool -v ../../pgns/${s}_${c}.pgn"
+
+        (cd "${s}/${c}" && trainingdata-tool "../../pgns/${s}_${c}.pgn") &
     done
     cd -
 done

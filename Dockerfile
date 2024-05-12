@@ -47,6 +47,8 @@ RUN mkdir -p /opt/pgn-extract && \
     make && \
     ln -s /opt/pgn-extract/pgn-extract /usr/local/bin/pgn-extract
 
+RUN apt update && apt install -y wine-stable
+
 # Set the working directory to /app
 WORKDIR /app
 
@@ -62,5 +64,6 @@ RUN apt-get update && \
         && rm -rf /var/lib/apt/lists/*
 
 COPY /scripts/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 # Set the entrypoint command to run the script
-ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]

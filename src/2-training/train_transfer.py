@@ -9,16 +9,14 @@ import random
 import multiprocessing
 import shutil
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 
-
+import logging
 import backend
 import backend.tf_transfer
 
 SKIP = 32
 
-@backend.logged_main
 def main(config_path, name, collection_name, player_name, gpu, num_workers):
     output_name = os.path.join('models', collection_name, name + '.txt')
 
@@ -80,7 +78,7 @@ def main(config_path, name, collection_name, player_name, gpu, num_workers):
 
     tfprocess.init_v2(train_dataset, test_dataset)
 
-    tfprocess.restore_v2()
+    tfprocess.restore_v2().expect_partial()
 
     num_evals = cfg['training'].get('num_test_positions', (len(val_chunks_white) + len(val_chunks_black)) * 10)
     num_evals = max(1, num_evals // backend.tf_transfer.ChunkParser.BATCH_SIZE)
@@ -122,6 +120,14 @@ full_config:
 ...""")
 
 if __name__ == "__main__":
+    print("Testing")
+    # Configure logging
+    logging.basicConfig(level=logging.DEBUG)  # Set the logging level to DEBUG
+    logger = multiprocessing.get_logger()  # Get the logger for multiprocessing
+    logger.setLevel(logging.DEBUG)  # Set the logging level for multiprocessing logger to DEBUG
+    logger.addHandler(logging.StreamHandler())  # Add a StreamHandler to log to the console
+
+
     parser = argparse.ArgumentParser(description='Tensorflow pipeline for training Leela Chess.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('config', help='config file for model / training')
@@ -137,6 +143,5 @@ if __name__ == "__main__":
     if args.player_name is not None:
         name = f"{args.player_name}_{name}"
 
-    multiprocessing.set_start_method('spawn')
     cfg = main(args.config, name, collection_name, args.player_name, args.gpu, args.num_workers)
     make_model_files(cfg, name, collection_name, args.copy_dir)
