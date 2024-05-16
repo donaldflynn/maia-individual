@@ -7,4 +7,4 @@ if [ "$#" -eq 0 ]; then
 fi
 
 # Run trainingdata-tool.exe with the provided arguments
-wine /app/ImportantTools/trainingdata-tool.exe "$@"
+wine /tools/trainingdata-tool.exe "$@"

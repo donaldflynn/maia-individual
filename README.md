@@ -1,12 +1,23 @@
-Instructions to get working:
+## Instructions to get working:
 
 1. Either build the docker container or download the image (TODO: get location)
 2. Download your chess games from lichess at https://lichess.org/@/[USERNAME]/download
    - Ensure not to download the games from the variants, and to leave PGN tags included in the download
 3. Rename your pgn to "input.pgn", and copy it into the /input folder
-4. Run the docker container using `/scripts/docker_run.bat <lichess username>`
-6. conda run -n transfer_chess --no-capture-output python train_transfer.py final_config.yaml
+4. Run the docker container using `/scripts/docker_run.bat <lichess username>`, or from the root directory, run the command 
+5. ```docker run --rm -it -v "/models":/app/2-training/models -v "/input":/app/input -v "/src:/app" --gpus=all -e PLAYER_NAME=<lichess username> maia-individual:latest```
+6. Wait until the model has finished training. The models directory will get populated with slowly improving models as the training progresses. To run the training to the end might take 24 hours or so of computation.
 
+## Comments
+
+Getting the code to run took quite a bit of fiddling around with settings, to get the right environment. The focus has very much been on containment as opposed to maintainability,
+so I suspect that if issues arise when running code then the error messages are likely to be quite unhelpful. 
+
+If running from the docker container however the code should be quite repeatable.
+
+I ran into issues resuming the training from a checkpoint, where the code would resume and run until the next checkpoint, however it
+would then crash. A hacky workaround that I definitely do not support is to override the entrypoint of the docker container by adding `--entrypoint /bin/bash` to the `docker_run.bat` file.
+And then manually going through the steps in `scripts/main.sh`, and setting up a script to rerun the final command every time it crashes. 
 
 -----
 # Original README:

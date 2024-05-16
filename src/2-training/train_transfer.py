@@ -78,7 +78,7 @@ def main(config_path, name, collection_name, player_name, gpu, num_workers):
 
     tfprocess.init_v2(train_dataset, test_dataset)
 
-    tfprocess.restore_v2().expect_partial()
+    tfprocess.restore_v2()
 
     num_evals = cfg['training'].get('num_test_positions', (len(val_chunks_white) + len(val_chunks_black)) * 10)
     num_evals = max(1, num_evals // backend.tf_transfer.ChunkParser.BATCH_SIZE)

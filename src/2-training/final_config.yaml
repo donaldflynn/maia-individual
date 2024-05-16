@@ -3,7 +3,7 @@
 gpu: 0
 
 dataset:
-    path: '/app/processed/'
+    path: '/processed/'
     name: ${PLAYER_NAME}
 
 training:

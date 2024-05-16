@@ -35,8 +35,8 @@ RUN /opt/anaconda/bin/conda env create -f /tmp/environment.yml && \
     rm /tmp/environment.yml
 
 # Set up trainingdata-tool
-COPY src/ImportantTools/trainingdata-tool.sh /bin/trainingdata-tool
-RUN chmod +x /bin/trainingdata-tool
+COPY src/ImportantTools/trainingdata-tool.exe /tools/trainingdata-tool.exe
+COPY --chmod=+x src/ImportantTools/trainingdata-tool.sh /bin/trainingdata-tool
 
 # Set up pgn-extract tool
 COPY src/ImportantTools/pgn-extract-22-11.tgz /tmp/pgn-extract.tgz
@@ -52,18 +52,15 @@ RUN apt update && apt install -y wine-stable
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the project files
-COPY src .
-
-# Install the Python package
-RUN /opt/anaconda/bin/python setup.py install
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     screen && apt-get clean \
         && rm -rf /var/lib/apt/lists/*
 
-COPY /scripts/entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+COPY /scripts/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+COPY src .
+
 # Set the entrypoint command to run the script
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
