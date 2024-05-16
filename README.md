@@ -4,8 +4,9 @@
 2. Download your chess games from lichess at https://lichess.org/@/[USERNAME]/download
    - Ensure not to download the games from the variants, and to leave PGN tags included in the download
 3. Rename your pgn to "input.pgn", and copy it into the /input folder
-4. Run the docker container using `/scripts/docker_run.bat <lichess username>`, or from the root directory, run the command 
-5. ```docker run --rm -it -v "/models":/app/2-training/models -v "/input":/app/input -v "/src:/app" --gpus=all -e PLAYER_NAME=<lichess username> maia-individual:latest```
+4. Run the docker container using `/scripts/docker_run.bat <lichess username>`, or from the root directory, run the command
+ ```docker run --rm -it -v "/models":/app/2-training/models -v "/input":/app/input -v "/src:/app" --gpus=all -e PLAYER_NAME=<lichess username> maia-individual:latest```
+5. Note this involves passing a GPU into the docker container - which if you're on windows will probably either work first time or be a pain to fix. If you can an error saying something like "GPU index out of range" then this is the cause.
 6. Wait until the model has finished training. The models directory will get populated with slowly improving models as the training progresses. To run the training to the end might take 24 hours or so of computation.
 
 ## Comments
